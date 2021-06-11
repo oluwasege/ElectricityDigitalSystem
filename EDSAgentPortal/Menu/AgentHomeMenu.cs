@@ -23,7 +23,7 @@ namespace EDSAgentPortal.Menu
                     Console.Clear();
                     Console.WriteLine($"\t\t\t\t\t\tWelcome {agent.FirstName} {agent.LastName}\n\n\t\t\t\t\t\tPortal Dashboard");
                     Console.WriteLine();
-                    Console.WriteLine($"\n\n\t\t1 : View Information\n\n\t\t2 : View Customer Information\n\n\t\t3 : View Subscription History\n\n\t\t4 : Exit");
+                    Console.WriteLine($"\n\n\t\t1 : View Information\n\n\t\t2 : View registered customers\n\n\t\t3 : View Customer Subscription History\n\n\t\t4 : Exit");
                     Console.Write($"\n\t\t  : ");
                     string selection = Console.ReadLine();
                     Console.Write($"\n\t\tProccessing");
@@ -42,7 +42,7 @@ namespace EDSAgentPortal.Menu
                             break;
                         case "3":
                             AgentAccess agentAccess3 = new AgentAccess();
-                            agentAccess3.ViewCustomerSubscriptions();
+                            agentAccess3.ViewCustomerSubscriptionHistory();
                             break;
 
                         default:
