@@ -17,7 +17,7 @@ namespace EDSAgentPortal.Interfaces
 
         void SubscribeForCustomer(CustomerModel customer);
         void CancelCustomerSubscription();
-        void DeleteCustomer();
+        void RemoveCustomer();
 
     }
 }

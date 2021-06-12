@@ -129,8 +129,11 @@ namespace EDSAgentPortal.Services
                     break;
             }
         }
-        public void RemoveCustomer(string customerEmail)
+        public void RemoveCustomer()
         {
+            Console.Clear();
+            Console.Write("\t\tEnter Customer Email to be deleted :");
+            string customerEmail = Console.ReadLine();
             var customer = customerService.GetCustomerByEmail(customerEmail);
             var customerToBeDeleted = agentService.DeleteCustomer(customer);
 
@@ -179,7 +182,7 @@ namespace EDSAgentPortal.Services
                         Console.WriteLine("\n\t\tPlease provide the Customer's email address");
                         Console.Write($"\t\t  : ");
                         string customerEmail = Console.ReadLine();
-                        RemoveCustomer(customerEmail);
+                        RemoveCustomer();
                         AgentHomeMenu.AgentContinuation();
                         break;
                     case "2":
@@ -394,25 +397,7 @@ namespace EDSAgentPortal.Services
             }
         }
 
-        public void DeleteCustomer()
-        {
-            Console.Clear();
-            Console.Write("\t\tEnter Customer Email to be deleted :");
-            string customerEmail = Console.ReadLine();
-            var customer = customerService.GetCustomerByEmail(customerEmail);
-            if(customer!=null)
-            {
-                Console.WriteLine("\t\tConfirm to delete customer\n\t\t1 : Yes\n\t\t2 : No");
-                string options = Console.ReadLine();
-                switch (options)
-                {
-                    case "1":
-
-                }
-            }
-            
-            
-        }
+  
 
 
         private void MakeSubscriptionPaymentForCustomer(CustomerModel customer)
