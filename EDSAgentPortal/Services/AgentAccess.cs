@@ -132,7 +132,7 @@ namespace EDSAgentPortal.Services
         public void RemoveCustomer()
         {
             Console.Clear();
-            Console.Write("\t\tEnter Customer Email to be deleted :");
+            Console.Write("\t\tEnter Customer Email to be deleted : ");
             string customerEmail = Console.ReadLine();
             var customer = customerService.GetCustomerByEmail(customerEmail);
             var customerToBeDeleted = agentService.DeleteCustomer(customer);
@@ -141,12 +141,14 @@ namespace EDSAgentPortal.Services
             {
                 Console.WriteLine($"\n\t\tYou have Succesfully deleted {customer.FirstName} {customer.LastName} from the Available Customers");
                 Security.LongerPrintDotAnimation();
+                AgentHomeMenu.AgentContinuation();
 
             }
             else
             {
                 Console.WriteLine("Customer not Found");
                 Security.LongerPrintDotAnimation();
+                AgentHomeMenu.AgentContinuation();
             }
                 
 
@@ -159,39 +161,40 @@ namespace EDSAgentPortal.Services
             if (allCustomers.Count == 0)
             {
                 Console.Clear();
-                Console.WriteLine("\t\t\t\t\tThere are no Customers Available");
+                Console.WriteLine("\t\tThere are no Customers Available");
                 AgentHomeMenu.AgentContinuation();
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("\t\t\t\t\t\t\t\t\t\tCustomers Information\n\n");
-                Console.WriteLine("CustomerId\t\t\t\tFirstName\t\tLastName\t\tEmailAddress\t\tPhoneNumber\t\tMeterNumber\tCreatedDateTime\n");
+                Console.WriteLine("\t\t\t\t\t\tCustomers Information\n\n");
+                Console.WriteLine("FirstName\tLastName\tEmailAddress\tPhoneNumber\tMeterNumber\tCreatedDateTime\n");
+
+               
                 foreach (var customer in allCustomers)
                 {
-                    Console.WriteLine($"{customer.Id}\t{customer.FirstName}\t\t\t{customer.LastName}\t\t\t{customer.EmailAddress}\t\t\t{customer.PhoneNumber}\t\t{customer.MeterNumber}\t{customer.CreatedDateTime}\n");
-
+                  Console.WriteLine($"{customer.FirstName}\t\t{customer.LastName}  \t{customer.EmailAddress}\t\t{customer.PhoneNumber}\t{customer.MeterNumber}\t{customer.CreatedDateTime}\n");
                 }
-
-                Console.WriteLine("\t\tDo you want to remove any customer?\n\t\t1 : Yes\n\t\t2 : No");
-                Console.Write($"\t\t  : ");
-                string entry = Console.ReadLine();
-                switch (entry)
-                {
-                    case "1":
-                        Console.WriteLine("\n\t\tPlease provide the Customer's email address");
-                        Console.Write($"\t\t  : ");
-                        string customerEmail = Console.ReadLine();
-                        RemoveCustomer();
-                        AgentHomeMenu.AgentContinuation();
-                        break;
-                    case "2":
-                        AgentHomeMenu.AgentContinuation();
-                        break;
-                    default:
-                        ViewCustomersInformation();
-                        break;
-                }
+                AgentHomeMenu.AgentContinuation();
+                //    Console.WriteLine("\t\tDo you want to remove any customer?\n\t\t1 : Yes\n\t\t2 : No");
+                //    Console.Write($"\t\t  : ");
+                //    string entry = Console.ReadLine();
+                //    switch (entry)
+                //    {
+                //        case "1":
+                //            Console.WriteLine("\n\t\tPlease provide the Customer's email address");
+                //            Console.Write($"\t\t  : ");
+                //            string customerEmail = Console.ReadLine();
+                //            RemoveCustomer();
+                //            AgentHomeMenu.AgentContinuation();
+                //            break;
+                //        case "2":
+                //            AgentHomeMenu.AgentContinuation();
+                //            break;
+                //        default:
+                //            ViewCustomersInformation();
+                //            break;
+                //    }
 
             }
            
@@ -200,43 +203,54 @@ namespace EDSAgentPortal.Services
         public void ViewCustomerSubscriptionHistory()
         {
             Console.Clear();
-            Console.Write("\t\tEnter Customer email address");
+            Console.Write("\t\tEnter Customer email address : ");
             string customerEmail = Console.ReadLine();
             Console.Write("\t\tProcessing");
             Security.LongerPrintDotAnimation();
             Console.Clear();
-            string tariffId = default;
+            //string tariffId = default;
             var foundCustomer = customerService.GetCustomerByEmail(customerEmail);
             var subscriptions = subscriptionService.GetCustomerSubscription(foundCustomer.Id);
-
-            if (subscriptions.Count == 0)
+            if(foundCustomer!=null)
             {
-                Console.WriteLine($"\t\t{foundCustomer.FirstName} has not made any subscription");
-                
+                if (subscriptions.Count==0)
+                {
+                    Console.WriteLine($"\t\t{foundCustomer.FirstName} has not made any subscription");
+                    AgentHomeMenu.AgentContinuation();
+
+                }
+                else
+                {
+                    Console.WriteLine($"\t\t{foundCustomer.FirstName}'s subscription history\n\n");
+                    Console.WriteLine("\t\tTariff Name\t\t   Amount\t\tSubscription Date\t\tSubscription Status\n\n");
+                    foreach (var subscription in subscriptions)
+                    {
+                        string tariffId = subscription.TariffId;
+                        var customerTariff = tariffService.GetTarriffById(tariffId);
+                        Console.Write($"\t\t{customerTariff.Name}\t   #{subscription.Amount}\t\t{subscription.SubcriptionDateTime}\t\t{subscription.SubscriptionStatus}\n\n");
+                    }
+                    AgentHomeMenu.AgentContinuation();
+                }
+
             }
             else
             {
-                Console.WriteLine($"\t\t{foundCustomer.FirstName}'s subscription history\n\n");
-                Console.WriteLine("Tariff Name\t\tAmount\t\t\tSubscription Date\t\tSubscription Status\n\n");
-                foreach (var subscription in subscriptions)
-                {
-                    tariffId = subscription.TariffId;
-                    var customerTariff = tariffService.GetTarriffById(tariffId);
-                    Console.Write($"{customerTariff.Name}\tN{subscription.Amount}\t\t{subscription.SubcriptionDateTime}\t\t{subscription.SubscriptionStatus}\n\n");
-                }
-
-                
-
-
-
+                Console.WriteLine("\t\tCustomer does not exist");
+                AgentHomeMenu.AgentContinuation();
             }
-
-            SubscribeForCustomer(foundCustomer);
+            
         }
 
-        public void SubscribeForCustomer(CustomerModel customer)
+        public void SubscribeForCustomer()
         {
             Console.Clear();
+            Console.Write("\t\tEnter Customer email address : ");
+            string customerEmail = Console.ReadLine();
+            Console.Write("\t\tProcessing");
+            Security.LongerPrintDotAnimation();
+            Console.Clear();
+            
+            var customer = customerService.GetCustomerByEmail(customerEmail);
             var activeSub = subscriptionService.CheckActiveSubscription(customer.Id);
 
             if (activeSub.Count != 0)
@@ -256,7 +270,7 @@ namespace EDSAgentPortal.Services
                         AgentHomeMenu.CurrentStage = 1;
                         break;
                     default:
-                        SubscribeForCustomer(customer);
+                        SubscribeForCustomer();
                         break;
                 }
             }
@@ -352,7 +366,7 @@ namespace EDSAgentPortal.Services
         public void CancelCustomerSubscription()
         {
             Console.Clear();
-            Console.Write("\t\tEnter Customer email address");
+            Console.Write("\t\tEnter Customer email address : ");
             string customerEmail = Console.ReadLine();
             Console.Write("\t\tProcessing");
             Security.LongerPrintDotAnimation();

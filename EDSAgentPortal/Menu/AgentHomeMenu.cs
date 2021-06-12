@@ -23,7 +23,21 @@ namespace EDSAgentPortal.Menu
                     Console.Clear();
                     Console.WriteLine($"\t\t\t\t\t\tWelcome {agent.FirstName} {agent.LastName}\n\n\t\t\t\t\t\tPortal Dashboard");
                     Console.WriteLine();
-                    Console.WriteLine($"\n\n\t\t1 : View Information\n\n\t\t2 : View registered customers\n\n\t\t3 : View Customer Subscription History\n\n\t\t4 : Exit");
+                    Console.WriteLine($@"
+
+		1 : View information
+
+		2 : View registered customers
+
+		3 : View customer subscription history
+
+		4 : Subscribe for customer
+
+		5 : Cancel customer subscription
+
+		6 : Delete a registered customer
+
+		7 : Exit");
                     Console.Write($"\n\t\t  : ");
                     string selection = Console.ReadLine();
                     Console.Write($"\n\t\tProccessing");
@@ -33,18 +47,33 @@ namespace EDSAgentPortal.Menu
                     {
 
                         case "1":
-                            AgentAccess agentAccess = new AgentAccess();
-                            agentAccess.ViewAgentInformation();
+                            AgentAccess acessToAgentInfo = new AgentAccess();
+                            acessToAgentInfo.ViewAgentInformation();
                             break;
                         case "2":
-                            AgentAccess agentAccess2 = new AgentAccess();
-                            agentAccess2.ViewCustomersInformation();
+                            AgentAccess accesToRegisteredCustomers = new AgentAccess();
+                            accesToRegisteredCustomers.ViewCustomersInformation();
                             break;
                         case "3":
-                            AgentAccess agentAccess3 = new AgentAccess();
-                            agentAccess3.ViewCustomerSubscriptionHistory();
+                            
+                            AgentAccess customerSubscriptionHistory = new AgentAccess();
+                            customerSubscriptionHistory.ViewCustomerSubscriptionHistory();
                             break;
-
+                        case "4":
+                            AgentAccess customerSubscription = new AgentAccess();
+                            customerSubscription.SubscribeForCustomer();
+                            break;
+                        case "5":
+                            AgentAccess customerSubscriptionCancel = new AgentAccess();
+                            customerSubscriptionCancel.CancelCustomerSubscription();
+                            break;
+                        case "6":
+                            AgentAccess deleteCustomer = new AgentAccess();
+                            deleteCustomer.RemoveCustomer();
+                            break;
+                        case "7":
+                            Environment.Exit(0);
+                            break;
                         default:
                             break;
                     }

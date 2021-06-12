@@ -44,6 +44,12 @@ namespace ElectricityDigitalSystem.ClientServices
             return Sub;
         }
 
+        //public string IndividualActiveSubscriptionCeck(string cutomerId)
+        //{
+        //    var activeSubscription = fileService.Database.Subcriptions.Where(x => x.CustomerId == cutomerId);
+        //    string subscriptionActive = activeSubscription.Where(x => x.SubscriptionStatus == "Active");
+        //    return subscriptionActive;
+        //}
         public string UpdateSubscription(CustomerSubcription modifiedSubscription)
         {
             
