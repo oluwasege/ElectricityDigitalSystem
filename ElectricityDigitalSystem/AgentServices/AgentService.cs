@@ -64,20 +64,16 @@ namespace ElectricityDigitalSystem.AgentServices
         }
         public string DeleteCustomer(CustomerModel deleteCustomer)
         {
-            //bool val = fileService.Database.Customers.Remove(deleteCustomer); 
-            //    //fileService.Database.Customers.Remove(deleteCustomer);
-            //fileService.SaveChanges();
-            //return val;
-            if(deleteCustomer!=null)
+            if (deleteCustomer != null)
             {
-                int indexOfCustomer = fileService.Database.Customers.IndexOf(deleteCustomer);
+                var count = fileService.Database.Customers.Count();
+                var indexOfCustomer = fileService.Database.Customers.FindIndex(0, count, d => d.EmailAddress == deleteCustomer.EmailAddress);
+                fileService.Database.Customers.RemoveAt(indexOfCustomer);
                 fileService.SaveChanges();
-                return "SUCCESSFULLY UPDATED";
+                return "Deleted";
             }
-            
-            return "Failed, customer could not be deleted";
-
-
+            else
+                return "Not Deleted";
         }
         public List<CustomerModel> GetAllCustomer()
         {

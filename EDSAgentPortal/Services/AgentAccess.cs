@@ -20,6 +20,7 @@ namespace EDSAgentPortal.Services
         TariffService tariffService = new TariffService();
         decimal t1, t2, t3, t4 = default;
         string a1, a2, a3, a4 = default;
+        private static readonly Random r = new Random(DateTime.Now.Second);
         //CustomerAccess customerAccess = new CustomerAccess();
 
 
@@ -135,37 +136,20 @@ namespace EDSAgentPortal.Services
             Console.Write("\t\tEnter Customer Email to be deleted : ");
             string customerEmail = Console.ReadLine();
             var customer = customerService.GetCustomerByEmail(customerEmail);
-            if(customer!=null)
+            var customerToBeDeleted = agentService.DeleteCustomer(customer);
+            if (customerToBeDeleted == "Deleted")
             {
-               // bool customerToBeDeleted = agentService.DeleteCustomer(customer);
-                if (customerToBeDeleted.Equals(true))
-                {
-                    Console.Write($"\n\t\tYou have Succesfully deleted {customer.FirstName} {customer.LastName} from the Available Customers");
-                    Security.LongerPrintDotAnimation();
-                    AgentHomeMenu.AgentContinuation();
-                }
-                else
-                {
-                    Console.Write("\n\t\tCould not delete customer");
-                    Security.LongerPrintDotAnimation();
-                    AgentHomeMenu.AgentContinuation();
-                }
-                
-            }
-            
-
-            
-            else
-            {
-                Console.Write("\n\t\tCustomer not Found");
+                Console.WriteLine($"\n\t\tYou have Succesfully deleted {customer.FirstName} {customer.LastName} from the Available Customers");
                 Security.LongerPrintDotAnimation();
                 AgentHomeMenu.AgentContinuation();
             }
-                
-
-           
-
-        } 
+            else
+            {
+                Console.WriteLine("Customer not Found");
+                Security.LongerPrintDotAnimation();
+                AgentHomeMenu.AgentContinuation();
+            }
+        }
         public void ViewCustomersInformation()
         {
             
@@ -422,7 +406,127 @@ namespace EDSAgentPortal.Services
             }
         }
 
-  
+        public void RegisterCustomer()
+        {
+           
+                Dictionary<string, string> navItemDIc = new Dictionary<string, string>();
+                List<string> navigationItems = new List<string>
+            {
+                "FirstName", "LastName", "Email", "Password", "PhoneNumber"
+            };
+                Console.Clear();
+                Console.WriteLine("\t\tPlease provide customer details");
+
+                for (int i = 0; i < navigationItems.Count; i++)
+                {
+                    Console.Write($"\t\t{navigationItems[i]} : ");
+                    var value = Console.ReadLine();
+
+                    navItemDIc.Add(navigationItems[i], value);
+                }
+
+                string FirstName, LastName, Email, Password, PhoneNumber;
+
+                FirstName = navItemDIc["FirstName"];
+                LastName = navItemDIc["LastName"];
+                Email = navItemDIc["Email"];
+                Password = navItemDIc["Password"];
+                PhoneNumber = navItemDIc["PhoneNumber"];
+                while (string.IsNullOrEmpty(FirstName))
+                {
+                    Console.WriteLine("\n\n\t\tFirst name cannot be left blank");
+                    Console.Write("\t\tFirst Name : ");
+                    FirstName = Console.ReadLine();
+                }
+
+                while (string.IsNullOrEmpty(LastName))
+                {
+                    Console.WriteLine("\n\t\tLast name cannot be left blank");
+                    Console.Write("\t\tLast Name : ");
+                    LastName = Console.ReadLine();
+                }
+
+                while (string.IsNullOrEmpty(Email))
+                {
+                    Console.WriteLine("\n\t\tEmail cannot be left blank");
+                    Console.Write("\t\tEmail : ");
+                    Email = Console.ReadLine();
+                }
+
+                while (string.IsNullOrEmpty(Password))
+                {
+                    Console.WriteLine("\n\t\tPassword cannot be left blank");
+                    Console.Write("\t\tPassword : ");
+                    Password = Console.ReadLine();
+                }
+
+                ulong number;
+                while (!ulong.TryParse(PhoneNumber, out number))
+                {
+                    Console.WriteLine("\n\t\tPlease enter an 11 digit number");
+                    Console.Write("\t\tPhone Number : ");
+                    PhoneNumber = Console.ReadLine();
+                }
+
+
+
+                navItemDIc.Add("Firstname", FirstName);
+                navItemDIc.TryAdd("LastName", LastName);
+                navItemDIc.TryAdd("LastName", LastName);
+                navItemDIc.TryAdd("Email", Email);
+                navItemDIc.TryAdd("Password", Password);
+                navItemDIc.TryAdd("PhoneNumber", number.ToString("00000000000"));
+
+
+                //public int SeatNumber => r.Next(1, 19);
+                CustomerModel model = new CustomerModel
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    FirstName = FirstName,
+                    LastName = LastName,
+
+                    EmailAddress = Email,
+                    Password = Password,
+                    MeterNumber = string.Concat("MTR-" + r.Next(100000000, 999999999)),
+                    PhoneNumber = number.ToString("00000000000"),
+                };
+
+                string registrationResponds = RegisterUser(model);
+                if (registrationResponds == "Success")
+                {
+                    Console.WriteLine("\t\tRegistration Successful");
+                    Console.Write("\t\tRedirecting you to Home Page");
+                    Security.PrintDotAnimation();
+                    
+
+
+                }
+                else
+                {
+
+                    Console.WriteLine("An Error occured While Trying to Create your Account Please try Again");
+                    Security.PrintDotAnimation();
+
+                    
+                }
+
+            
+
+        }
+        public string RegisterUser(CustomerModel model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            else
+            {
+                //CustomerService service = new CustomerService();
+                string email = customerService.RegisterCustomer(model);
+                return email == null ? "Failed" : "Success";
+            }
+        }
+        
 
 
         private void MakeSubscriptionPaymentForCustomer(CustomerModel customer)

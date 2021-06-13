@@ -23,21 +23,7 @@ namespace EDSAgentPortal.Menu
                     Console.Clear();
                     Console.WriteLine($"\t\t\t\t\t\tWelcome {agent.FirstName} {agent.LastName}\n\n\t\t\t\t\t\tPortal Dashboard");
                     Console.WriteLine();
-                    Console.WriteLine($@"
-
-		1 : View information
-
-		2 : View registered customers
-
-		3 : View customer subscription history
-
-		4 : Subscribe for customer
-
-		5 : Cancel customer subscription
-
-		6 : Delete a registered customer
-
-		7 : Exit");
+                    Console.WriteLine($"\n\n\t\t1 : View information \n\n\t\t2 : View registered customers\n\n\t\t3 : View customer subscription history\n\n\t\t4 : Subscribe for customer\n\n\t\t5 : Cancel customer subscription\n\n\t\t6 : Delete a registered customer\n\n\t\t7 : Register a new customer\n\n\t\t8 : Exit");
                     Console.Write($"\n\t\t  : ");
                     string selection = Console.ReadLine();
                     Console.Write($"\n\t\tProccessing");
@@ -72,6 +58,10 @@ namespace EDSAgentPortal.Menu
                             deleteCustomer.RemoveCustomer();
                             break;
                         case "7":
+                            AgentAccess registerCustomer = new AgentAccess();
+                            registerCustomer.RegisterCustomer();
+                            break;
+                        case "8":
                             Environment.Exit(0);
                             break;
                         default:

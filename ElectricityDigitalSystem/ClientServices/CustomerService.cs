@@ -14,7 +14,7 @@ namespace ElectricityDigitalSystem.ClientServices
             {
                 throw new ArgumentNullException(nameof(customer));
             }
-            //This ill Handle registration of a customer
+            //This will Handle registration of a customer
             else
             {
                 
