@@ -135,18 +135,29 @@ namespace EDSAgentPortal.Services
             Console.Write("\t\tEnter Customer Email to be deleted : ");
             string customerEmail = Console.ReadLine();
             var customer = customerService.GetCustomerByEmail(customerEmail);
-            var customerToBeDeleted = agentService.DeleteCustomer(customer);
-
-            if (customerToBeDeleted == true)
+            if(customer!=null)
             {
-                Console.WriteLine($"\n\t\tYou have Succesfully deleted {customer.FirstName} {customer.LastName} from the Available Customers");
-                Security.LongerPrintDotAnimation();
-                AgentHomeMenu.AgentContinuation();
-
+               // bool customerToBeDeleted = agentService.DeleteCustomer(customer);
+                if (customerToBeDeleted.Equals(true))
+                {
+                    Console.Write($"\n\t\tYou have Succesfully deleted {customer.FirstName} {customer.LastName} from the Available Customers");
+                    Security.LongerPrintDotAnimation();
+                    AgentHomeMenu.AgentContinuation();
+                }
+                else
+                {
+                    Console.Write("\n\t\tCould not delete customer");
+                    Security.LongerPrintDotAnimation();
+                    AgentHomeMenu.AgentContinuation();
+                }
+                
             }
+            
+
+            
             else
             {
-                Console.WriteLine("Customer not Found");
+                Console.Write("\n\t\tCustomer not Found");
                 Security.LongerPrintDotAnimation();
                 AgentHomeMenu.AgentContinuation();
             }
